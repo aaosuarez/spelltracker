@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { knownSpells, Spell } from "./spells";
 import Button, { ButtonSizes, ButtonType } from "./Button";
 import { canPrepareSpell, getSpellsByLevel, spellsPerDay } from "./utils";
@@ -83,16 +83,28 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
+const STORAGE_KEY = "SPELL_TRACKER";
+
+const initializer = (initialValue = initialState) => {
+  const state = localStorage.getItem(STORAGE_KEY);
+  return state != null ? JSON.parse(state) : initialValue;
+};
+
 function App() {
   // TODO: allow spell casting
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState, initializer);
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [state]);
+
   const { preparedSpells, mode } = state;
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
 
   return (
-    <>
-      <div className={"sticky top-0 p-4 bg-white shadow z-10"}>
+    <div className={"flex flex-col h-screen"}>
+      <div className={"p-4 bg-white shadow z-10"}>
         <div className={"flex"}>
           <Button
             className={"flex-1 mr-1 text-sm"}
@@ -115,11 +127,11 @@ function App() {
           <SpellsCast />
         )}
       </div>
-      <div className={"px-4"}>
+      <div className={"px-4 overflow-y-auto"}>
         {Object.entries(getSpellsByLevel(spellsToDisplay)).map(
           ([level, spells]) => {
             return (
-              <>
+              <div key={level}>
                 <div className={"uppercase text-sm py-3 bg-white"}>
                   Level {level}
                 </div>
@@ -133,26 +145,28 @@ function App() {
                         className={"flex justify-between items-center mb-2"}
                       >
                         {spell.name}
-                        <Button
-                          onClick={() =>
-                            dispatch({ type: "PREPARE_SPELL", spell })
-                          }
-                          type={ButtonType.OUTLINE}
-                          size={ButtonSizes.SMALL}
-                          disabled={!canPrepare}
-                        >
-                          Prepare
-                        </Button>
+                        {mode === Mode.PREPARE ? (
+                          <Button
+                            onClick={() =>
+                              dispatch({ type: "PREPARE_SPELL", spell })
+                            }
+                            type={ButtonType.OUTLINE}
+                            size={ButtonSizes.SMALL}
+                            disabled={!canPrepare}
+                          >
+                            Prepare
+                          </Button>
+                        ) : null}
                       </li>
                     );
                   })}
                 </ul>
-              </>
+              </div>
             );
           }
         )}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -23,8 +23,6 @@
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +89,7 @@
       <updated>1609469632336</updated>
       <workItem from="1609469633440" duration="1873000" />
       <workItem from="1610154894713" duration="7480000" />
-      <workItem from="1610230238479" duration="1938000" />
+      <workItem from="1610230238479" duration="3188000" />
     </task>
     <servers />
   </component>
@@ -115,26 +113,26 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state x="1500" y="475" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1440/2560.145.1920.1080@0.0.2560.1440" timestamp="1610158112021" />
-    <state width="1558" height="504" key="GridCell.Tab.0.bottom" timestamp="1610230247250">
+    <state width="1558" height="410" key="GridCell.Tab.0.bottom" timestamp="1610232194781">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1558" height="416" key="GridCell.Tab.0.bottom/0.0.2560.1440/2560.145.1920.1080@0.0.2560.1440" timestamp="1610162446213" />
-    <state width="1558" height="504" key="GridCell.Tab.0.bottom/0.0.2560.1440@0.0.2560.1440" timestamp="1610230247250" />
-    <state width="1558" height="504" key="GridCell.Tab.0.center" timestamp="1610230247250">
+    <state width="1558" height="410" key="GridCell.Tab.0.bottom/0.0.2560.1440@0.0.2560.1440" timestamp="1610232194781" />
+    <state width="1558" height="410" key="GridCell.Tab.0.center" timestamp="1610232194781">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1558" height="416" key="GridCell.Tab.0.center/0.0.2560.1440/2560.145.1920.1080@0.0.2560.1440" timestamp="1610162446213" />
-    <state width="1558" height="504" key="GridCell.Tab.0.center/0.0.2560.1440@0.0.2560.1440" timestamp="1610230247250" />
-    <state width="1558" height="504" key="GridCell.Tab.0.left" timestamp="1610230247250">
+    <state width="1558" height="410" key="GridCell.Tab.0.center/0.0.2560.1440@0.0.2560.1440" timestamp="1610232194781" />
+    <state width="1558" height="410" key="GridCell.Tab.0.left" timestamp="1610232194780">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1558" height="416" key="GridCell.Tab.0.left/0.0.2560.1440/2560.145.1920.1080@0.0.2560.1440" timestamp="1610162446213" />
-    <state width="1558" height="504" key="GridCell.Tab.0.left/0.0.2560.1440@0.0.2560.1440" timestamp="1610230247250" />
-    <state width="1558" height="504" key="GridCell.Tab.0.right" timestamp="1610230247250">
+    <state width="1558" height="410" key="GridCell.Tab.0.left/0.0.2560.1440@0.0.2560.1440" timestamp="1610232194780" />
+    <state width="1558" height="410" key="GridCell.Tab.0.right" timestamp="1610232194781">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1558" height="416" key="GridCell.Tab.0.right/0.0.2560.1440/2560.145.1920.1080@0.0.2560.1440" timestamp="1610162446213" />
-    <state width="1558" height="504" key="GridCell.Tab.0.right/0.0.2560.1440@0.0.2560.1440" timestamp="1610230247250" />
+    <state width="1558" height="410" key="GridCell.Tab.0.right/0.0.2560.1440@0.0.2560.1440" timestamp="1610232194781" />
     <state width="1558" height="504" key="GridCell.Tab.1.bottom" timestamp="1610230247250">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
