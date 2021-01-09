@@ -1,9 +1,10 @@
 export type Spell = {
   level: number;
   name: string;
+  id: number;
 };
 
-const spells: Spell[] = [
+export const knownSpells: Spell[] = [
   {
     level: 0,
     name: "Arcane Mark",
@@ -172,6 +173,4 @@ const spells: Spell[] = [
     level: 4,
     name: "Divination",
   },
-];
-
-export default spells;
+].map((spell, i) => ({ ...spell, id: i }));

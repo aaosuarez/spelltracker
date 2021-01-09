@@ -1,33 +1,53 @@
 import React from "react";
 
 export enum ButtonType {
-  Fill,
-  Outline,
+  FILL,
+  OUTLINE,
 }
 
 type ButtonProps = {
   className?: string;
   type?: ButtonType;
+  size?: ButtonSizes;
   children?: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => unknown;
+  disabled?: boolean;
 };
 
 const ButtonTypeStyles = {
-  [ButtonType.Fill]: "border-white bg-purple-500 text-white",
-  [ButtonType.Outline]: "border-purple-500 bg-white text-purple-500",
+  [ButtonType.FILL]: "border-white bg-purple-500 text-white",
+  [ButtonType.OUTLINE]: "border-purple-500 bg-white text-purple-500",
+};
+
+export enum ButtonSizes {
+  NONE,
+  SMALL,
+}
+
+const ButtonSizeStyles = {
+  [ButtonSizes.NONE]: "p-2",
+  [ButtonSizes.SMALL]: "text-xs px-2 py-1",
 };
 
 const Button = ({
-  className,
-  type = ButtonType.Fill,
-  ...props
+  className = "",
+  type = ButtonType.FILL,
+  size = ButtonSizes.NONE,
+  disabled,
+  children,
+  onClick,
 }: ButtonProps) => {
-  const buttonStyles = ButtonTypeStyles[type];
+  const buttonTypeStyle = ButtonTypeStyles[type];
+  const buttonSizeStyle = ButtonSizeStyles[size];
+  const disabledStyle = disabled && "disabled:opacity-50";
   return (
     <button
-      className={`py-2 px-2 rounded border ${buttonStyles} ${className}`}
-      {...props}
-    />
+      className={`rounded border ${buttonTypeStyle} ${buttonSizeStyle} ${disabledStyle} ${className}`}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
 };
 
