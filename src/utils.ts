@@ -13,13 +13,27 @@ export const getSpellsByLevel = (spells: Spell[]): Record<number, Spell[]> => {
   }, {} as Record<number, Spell[]>);
 };
 
-// TODO: account for cantrips
+const isCantrip = (spell: Spell): boolean => {
+  return spell.level === 0;
+};
+
 export const canPrepareSpell = (
   preparedSpells: Spell[],
-  newSpell: Spell
+  spell: Spell
 ): boolean => {
-  const maxSpells = spellsPerDay[newSpell.level];
+  const maxSpells = spellsPerDay[spell.level];
+  if (maxSpells == null) {
+    return false;
+  }
   const numSpellsPreparedAtLevel =
-    getSpellsByLevel(preparedSpells)[newSpell.level]?.length ?? 0;
-  return maxSpells != null && numSpellsPreparedAtLevel < maxSpells;
+    getSpellsByLevel(preparedSpells)[spell.level]?.length ?? 0;
+
+  if (isCantrip(spell)) {
+    const hasPreparedCantrip = preparedSpells.some(
+      (preparedSpell: Spell) => preparedSpell.name === spell.name
+    );
+    return !hasPreparedCantrip && numSpellsPreparedAtLevel < maxSpells;
+  }
+
+  return numSpellsPreparedAtLevel < maxSpells;
 };
