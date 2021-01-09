@@ -1,7 +1,13 @@
 import React, { useEffect, useReducer } from "react";
 import { knownSpells, Spell } from "./spells";
 import Button, { ButtonSizes, ButtonType } from "./Button";
-import { canPrepareSpell, getSpellsByLevel, spellsPerDay } from "./utils";
+import {
+  canCastSpell,
+  canPrepareSpell,
+  getSpellsByLevel,
+  isCantrip,
+  spellsPerDay,
+} from "./utils";
 
 enum Mode {
   PREPARE,
@@ -15,10 +21,9 @@ const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
       <div className={"text-center text-sm"}>Prepared Spells</div>
       <div className={"flex justify-between"}>
         {spellsPerDay.map((maxSpells, level) => {
+          const numPreparedSpells = preparedSpellsByLevel[level]?.length ?? 0;
           const text =
-            maxSpells == null
-              ? "-"
-              : `${preparedSpellsByLevel[level]?.length ?? 0}/${maxSpells}`;
+            maxSpells == null ? "-" : `${numPreparedSpells}/${maxSpells}`;
           return (
             <div key={level} className={"flex flex-col text-center flex-1"}>
               <div className={"text-xs"}>{level}</div>
@@ -31,13 +36,21 @@ const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
   );
 };
 
-const SpellsCast = () => {
+const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
+  const usedSpellsByLevel = getSpellsByLevel(usedSpells);
+  console.log({ usedSpells });
   return (
     <div className={"my-2"}>
       <div className={"text-center text-sm"}>Spells Cast</div>
       <div className={"flex justify-between"}>
         {spellsPerDay.map((spellNumber, level) => {
-          const text = spellNumber == null ? "-" : `0/${spellNumber}`;
+          const numUsedSpells = usedSpellsByLevel[level]?.length ?? 0;
+          const text =
+            spellNumber == null
+              ? "-"
+              : level === 0
+              ? "∞"
+              : `${numUsedSpells}/${spellNumber}`;
           return (
             <div key={level} className={"flex flex-col text-center flex-1"}>
               <div className={"text-xs"}>{level}</div>
@@ -52,16 +65,19 @@ const SpellsCast = () => {
 
 type Action =
   | { type: "SET_MODE"; mode: Mode }
-  | { type: "PREPARE_SPELL"; spell: Spell };
+  | { type: "PREPARE_SPELL"; spell: Spell }
+  | { type: "CAST_SPELL"; spell: Spell };
 
 type State = {
   mode: Mode;
   preparedSpells: Spell[];
+  usedSpells: Spell[];
 };
 
 const initialState: State = {
   mode: Mode.PREPARE,
   preparedSpells: [],
+  usedSpells: [],
 };
 
 const reducer = (state: State, action: Action) => {
@@ -78,6 +94,13 @@ const reducer = (state: State, action: Action) => {
         { ...action.spell, id: Math.floor(Math.random() * 1000) },
       ];
       return { ...state, preparedSpells: newPreparedSpells };
+    case "CAST_SPELL":
+      const { usedSpells } = state;
+      if (!canCastSpell(usedSpells, action.spell) || isCantrip(action.spell)) {
+        return state;
+      }
+      const newUsedSpells = [...usedSpells, action.spell];
+      return { ...state, usedSpells: newUsedSpells };
     default:
       return state;
   }
@@ -91,20 +114,19 @@ const initializer = (initialValue = initialState) => {
 };
 
 function App() {
-  // TODO: allow spell casting
   const [state, dispatch] = useReducer(reducer, initialState, initializer);
 
   useEffect(() => {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  const { preparedSpells, mode } = state;
+  const { preparedSpells, mode, usedSpells } = state;
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
 
   return (
     <div className={"flex flex-col h-screen"}>
-      <div className={"p-4 bg-white shadow z-10"}>
+      <div className={"p-4 bg-white shadow z-20"}>
         <div className={"flex"}>
           <Button
             className={"flex-1 mr-1 text-sm"}
@@ -124,7 +146,7 @@ function App() {
         {mode === Mode.PREPARE ? (
           <SpellsPerDay preparedSpells={preparedSpells} />
         ) : (
-          <SpellsCast />
+          <SpellsCast usedSpells={usedSpells} />
         )}
       </div>
       <div className={"px-4 overflow-y-auto"}>
@@ -132,7 +154,11 @@ function App() {
           ([level, spells]) => {
             return (
               <div key={level}>
-                <div className={"uppercase text-sm py-3 bg-white"}>
+                <div
+                  className={
+                    "sticky top-0 uppercase text-sm py-3 bg-white z-10"
+                  }
+                >
                   Level {level}
                 </div>
                 <ul className={"mb-4"}>
@@ -156,7 +182,18 @@ function App() {
                           >
                             Prepare
                           </Button>
-                        ) : null}
+                        ) : (
+                          <Button
+                            onClick={() =>
+                              dispatch({ type: "CAST_SPELL", spell })
+                            }
+                            size={ButtonSizes.SMALL}
+                            type={ButtonType.OUTLINE}
+                            disabled={!canCastSpell(usedSpells, spell)}
+                          >
+                            Cast
+                          </Button>
+                        )}
                       </li>
                     );
                   })}

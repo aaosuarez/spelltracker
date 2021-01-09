@@ -13,7 +13,7 @@ export const getSpellsByLevel = (spells: Spell[]): Record<number, Spell[]> => {
   }, {} as Record<number, Spell[]>);
 };
 
-const isCantrip = (spell: Spell): boolean => {
+export const isCantrip = (spell: Spell): boolean => {
   return spell.level === 0;
 };
 
@@ -36,4 +36,11 @@ export const canPrepareSpell = (
   }
 
   return numSpellsPreparedAtLevel < maxSpells;
+};
+
+export const canCastSpell = (usedSpells: Spell[], spell: Spell): boolean => {
+  if (isCantrip(spell)) {
+    return true;
+  }
+  return !usedSpells.some((usedSpell) => usedSpell.id === spell.id);
 };
