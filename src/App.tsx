@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import { knownSpells, Spell } from "./spells";
 import Button, { ButtonSizes, ButtonType } from "./Button";
 import { canPrepareSpell, getSpellsByLevel, spellsPerDay } from "./utils";
 
 enum Mode {
-  Prepare,
-  Cast,
+  PREPARE,
+  CAST,
 }
 
 const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
@@ -50,49 +50,66 @@ const SpellsCast = () => {
   );
 };
 
+type Action =
+  | { type: "SET_MODE"; mode: Mode }
+  | { type: "PREPARE_SPELL"; spell: Spell };
+
+type State = {
+  mode: Mode;
+  preparedSpells: Spell[];
+};
+
+const initialState: State = {
+  mode: Mode.PREPARE,
+  preparedSpells: [],
+};
+
+const reducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case "SET_MODE":
+      return { ...state, mode: action.mode };
+    case "PREPARE_SPELL":
+      const { preparedSpells } = state;
+      if (!canPrepareSpell(preparedSpells, action.spell)) {
+        return state;
+      }
+      const newPreparedSpells = [
+        ...preparedSpells,
+        { ...action.spell, id: Math.floor(Math.random() * 1000) },
+      ];
+      return { ...state, preparedSpells: newPreparedSpells };
+    default:
+      return state;
+  }
+};
+
 function App() {
-  // TODO: switch to using useReducer
   // TODO: allow spell casting
-  const [mode, setMode] = useState<Mode>(Mode.Prepare);
-  const [preparedSpells, setPreparedSpells] = useState<Spell[]>([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { preparedSpells, mode } = state;
   const spellsToDisplay: Spell[] =
-    mode === Mode.Prepare ? knownSpells : preparedSpells;
-  const prepareSpell = (spell: Spell) => {
-    const preparedSpellsByLevel = getSpellsByLevel(preparedSpells);
-    const maxSpells = spellsPerDay[spell.level];
-    const numPreparedSpellsAtLevel =
-      preparedSpellsByLevel[spell.level]?.length ?? 0;
-    if (maxSpells == null || numPreparedSpellsAtLevel >= maxSpells) {
-      return;
-    }
-    setPreparedSpells([
-      ...preparedSpells,
-      // TODO: generate uuid for spell
-      { ...spell, id: Math.random() * 100000 },
-    ]);
-  };
+    mode === Mode.PREPARE ? knownSpells : preparedSpells;
+
   return (
     <>
       <div className={"sticky top-0 p-4 bg-white shadow z-10"}>
         <div className={"flex"}>
           <Button
             className={"flex-1 mr-1 text-sm"}
-            type={mode === Mode.Prepare ? ButtonType.FILL : ButtonType.OUTLINE}
-            onClick={() => setMode(Mode.Prepare)}
+            type={mode === Mode.PREPARE ? ButtonType.FILL : ButtonType.OUTLINE}
+            onClick={() => dispatch({ type: "SET_MODE", mode: Mode.PREPARE })}
           >
             PREPARE SPELLS
           </Button>
           <Button
             className={"flex-1 ml-1 text-sm"}
-            type={mode === Mode.Cast ? ButtonType.FILL : ButtonType.OUTLINE}
-            onClick={() => {
-              setMode(Mode.Cast);
-            }}
+            type={mode === Mode.CAST ? ButtonType.FILL : ButtonType.OUTLINE}
+            onClick={() => dispatch({ type: "SET_MODE", mode: Mode.CAST })}
           >
             CAST SPELLS
           </Button>
         </div>
-        {mode === Mode.Prepare ? (
+        {mode === Mode.PREPARE ? (
           <SpellsPerDay preparedSpells={preparedSpells} />
         ) : (
           <SpellsCast />
@@ -115,8 +132,11 @@ function App() {
                         key={spell.id}
                         className={"flex justify-between items-center mb-2"}
                       >
+                        {spell.name}
                         <Button
-                          onClick={() => prepareSpell(spell)}
+                          onClick={() =>
+                            dispatch({ type: "PREPARE_SPELL", spell })
+                          }
                           type={ButtonType.OUTLINE}
                           size={ButtonSizes.SMALL}
                           disabled={!canPrepare}
