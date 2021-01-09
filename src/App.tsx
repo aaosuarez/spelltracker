@@ -66,7 +66,8 @@ const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
 type Action =
   | { type: "SET_MODE"; mode: Mode }
   | { type: "PREPARE_SPELL"; spell: Spell }
-  | { type: "CAST_SPELL"; spell: Spell };
+  | { type: "CAST_SPELL"; spell: Spell }
+  | { type: "RESET" };
 
 type State = {
   mode: Mode;
@@ -101,6 +102,8 @@ const reducer = (state: State, action: Action) => {
       }
       const newUsedSpells = [...usedSpells, action.spell];
       return { ...state, usedSpells: newUsedSpells };
+    case "RESET":
+      return initialState;
     default:
       return state;
   }
@@ -148,6 +151,12 @@ function App() {
         ) : (
           <SpellsCast usedSpells={usedSpells} />
         )}
+        <p
+          className={"underline text-xs text-center"}
+          onClick={() => dispatch({ type: "RESET" })}
+        >
+          Reset
+        </p>
       </div>
       <div className={"px-4 overflow-y-auto"}>
         {Object.entries(getSpellsByLevel(spellsToDisplay)).map(
