@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from "react";
 import { knownSpells, Spell } from "./spells";
-import Button, { ButtonSizes, ButtonType } from "./Button";
+import Button, { ButtonSizes, ButtonType } from "./components/Button";
 import {
   canCastSpell,
   canPrepareSpell,
@@ -8,13 +8,13 @@ import {
   isCantrip,
   spellsPerDay,
 } from "./utils";
-import Wands from "./Wands";
-import Scrolls from "./Scroll";
-import Hexes from "./Hexes";
-import { ListTitle } from "./ListTitle";
-import SpellsByLevel from "./SpellsByLevel";
+import Wands from "./components/Wands";
+import Scrolls from "./components/Scroll";
+import Hexes from "./components/Hexes";
+import SpellsByLevel from "./components/SpellsByLevel";
+import useAppReducer from "./hooks/useAppReducer";
 
-enum Mode {
+export enum Mode {
   PREPARE,
   CAST,
 }
@@ -69,68 +69,8 @@ const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
   );
 };
 
-type Action =
-  | { type: "SET_MODE"; mode: Mode }
-  | { type: "PREPARE_SPELL"; spell: Spell }
-  | { type: "CAST_SPELL"; spell: Spell }
-  | { type: "RESET" };
-
-type State = {
-  mode: Mode;
-  preparedSpells: Spell[];
-  usedSpells: Spell[];
-};
-
-const initialState: State = {
-  mode: Mode.PREPARE,
-  preparedSpells: [],
-  usedSpells: [],
-};
-
-const reducer = (state: State, action: Action) => {
-  switch (action.type) {
-    case "SET_MODE":
-      return { ...state, mode: action.mode };
-    case "PREPARE_SPELL":
-      const { preparedSpells } = state;
-      if (!canPrepareSpell(preparedSpells, action.spell)) {
-        return state;
-      }
-      const newPreparedSpells = [
-        ...preparedSpells,
-        { ...action.spell, id: Math.floor(Math.random() * 1000) },
-      ];
-      return { ...state, preparedSpells: newPreparedSpells };
-    case "CAST_SPELL":
-      const { usedSpells } = state;
-      if (!canCastSpell(usedSpells, action.spell) || isCantrip(action.spell)) {
-        return state;
-      }
-      const newUsedSpells = [...usedSpells, action.spell];
-      return { ...state, usedSpells: newUsedSpells };
-    case "RESET":
-      return initialState;
-    default:
-      return state;
-  }
-};
-
-const STORAGE_KEY = "SPELL_TRACKER";
-
-const initializer = (initialValue = initialState) => {
-  const state = localStorage.getItem(STORAGE_KEY);
-  return state != null ? JSON.parse(state) : initialValue;
-};
-
 function App() {
-  // TODO: Extract reducer
-  const [state, dispatch] = useReducer(reducer, initialState, initializer);
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
-
-  const { preparedSpells, mode, usedSpells } = state;
+  const [{ preparedSpells, mode, usedSpells }, dispatch] = useAppReducer();
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
 
