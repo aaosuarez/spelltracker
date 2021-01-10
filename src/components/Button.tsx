@@ -15,7 +15,8 @@ type ButtonProps = {
 };
 
 const ButtonTypeStyles = {
-  [ButtonType.FILL]: "border-white bg-purple-500 text-white",
+  [ButtonType.FILL]:
+    "border-white bg-gradient-to-r from-purple-500 to-purple-700 text-white",
   [ButtonType.OUTLINE]: "border-purple-500 bg-white text-purple-500",
 };
 

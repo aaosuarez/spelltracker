@@ -12,7 +12,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => {
   return (
     <div
       className={
-        "sticky top-0 uppercase text-xs text-purple-900 py-1 pl-2 bg-purple-100 z-10 mb-3"
+        "sticky top-0 uppercase text-xs text-purple-900 p-2 bg-gradient-to-r from-purple-50 to-purple-200 z-10 mb-3"
       }
     >
       {children}
