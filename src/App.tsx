@@ -8,12 +8,18 @@ import {
   isCantrip,
   spellsPerDay,
 } from "./utils";
+import Wands from "./Wands";
+import Scrolls from "./Scroll";
+import Hexes from "./Hexes";
+import { ListTitle } from "./ListTitle";
+import SpellsByLevel from "./SpellsByLevel";
 
 enum Mode {
   PREPARE,
   CAST,
 }
 
+// TODO: Sort alphabetically by level
 const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
   const preparedSpellsByLevel = getSpellsByLevel(preparedSpells);
   return (
@@ -36,9 +42,9 @@ const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
   );
 };
 
+// TODO: Sort alphabetically & if cast by level
 const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
   const usedSpellsByLevel = getSpellsByLevel(usedSpells);
-  console.log({ usedSpells });
   return (
     <div className={"my-2"}>
       <div className={"text-center text-sm"}>Spells Cast</div>
@@ -117,6 +123,7 @@ const initializer = (initialValue = initialState) => {
 };
 
 function App() {
+  // TODO: Extract reducer
   const [state, dispatch] = useReducer(reducer, initialState, initializer);
 
   useEffect(() => {
@@ -126,6 +133,35 @@ function App() {
   const { preparedSpells, mode, usedSpells } = state;
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
+
+  const renderSpell = (spell: Spell) => {
+    const canPrepare = canPrepareSpell(preparedSpells, spell);
+
+    return (
+      <li key={spell.id} className={"flex justify-between items-center mb-2"}>
+        {spell.name}
+        {mode === Mode.PREPARE ? (
+          <Button
+            onClick={() => dispatch({ type: "PREPARE_SPELL", spell })}
+            type={ButtonType.OUTLINE}
+            size={ButtonSizes.SMALL}
+            disabled={!canPrepare}
+          >
+            Prepare
+          </Button>
+        ) : (
+          <Button
+            onClick={() => dispatch({ type: "CAST_SPELL", spell })}
+            size={ButtonSizes.SMALL}
+            type={ButtonType.OUTLINE}
+            disabled={!canCastSpell(usedSpells, spell)}
+          >
+            Cast
+          </Button>
+        )}
+      </li>
+    );
+  };
 
   return (
     <div className={"flex flex-col h-screen"}>
@@ -159,58 +195,14 @@ function App() {
         </p>
       </div>
       <div className={"px-4 overflow-y-auto"}>
-        {Object.entries(getSpellsByLevel(spellsToDisplay)).map(
-          ([level, spells]) => {
-            return (
-              <div key={level}>
-                <div
-                  className={
-                    "sticky top-0 uppercase text-sm py-3 bg-white z-10"
-                  }
-                >
-                  Level {level}
-                </div>
-                <ul className={"mb-4"}>
-                  {spells.map((spell) => {
-                    const canPrepare = canPrepareSpell(preparedSpells, spell);
-
-                    return (
-                      <li
-                        key={spell.id}
-                        className={"flex justify-between items-center mb-2"}
-                      >
-                        {spell.name}
-                        {mode === Mode.PREPARE ? (
-                          <Button
-                            onClick={() =>
-                              dispatch({ type: "PREPARE_SPELL", spell })
-                            }
-                            type={ButtonType.OUTLINE}
-                            size={ButtonSizes.SMALL}
-                            disabled={!canPrepare}
-                          >
-                            Prepare
-                          </Button>
-                        ) : (
-                          <Button
-                            onClick={() =>
-                              dispatch({ type: "CAST_SPELL", spell })
-                            }
-                            size={ButtonSizes.SMALL}
-                            type={ButtonType.OUTLINE}
-                            disabled={!canCastSpell(usedSpells, spell)}
-                          >
-                            Cast
-                          </Button>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          }
-        )}
+        {mode === Mode.CAST ? (
+          <>
+            <Hexes />
+            <Scrolls />
+            <Wands />
+          </>
+        ) : null}
+        <SpellsByLevel spells={spellsToDisplay} renderSpell={renderSpell} />
       </div>
     </div>
   );

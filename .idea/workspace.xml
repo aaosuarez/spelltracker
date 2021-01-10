@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1396f9e2-f143-407f-a8b5-28cb42bacb01" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
     </list>
@@ -61,6 +60,7 @@
   </component>
   <component name="RecentsManager">
     <key name="es6.move.members.recent.items">
+      <recent name="C:\Users\aaosu\WebstormProjects\spelltracker\src\ListTitle.tsx" />
       <recent name="C:\Users\aaosu\WebstormProjects\spelltracker\src\utils.ts" />
     </key>
   </component>
@@ -89,7 +89,7 @@
       <updated>1609469632336</updated>
       <workItem from="1609469633440" duration="1873000" />
       <workItem from="1610154894713" duration="7480000" />
-      <workItem from="1610230238479" duration="4978000" />
+      <workItem from="1610230238479" duration="8681000" />
     </task>
     <servers />
   </component>
