@@ -1,5 +1,5 @@
 import React from "react";
-import { ListTitle } from "./ListTitle";
+import Section from "./Section";
 import { Scroll } from "../types";
 
 const scrolls: Scroll[] = [
@@ -10,12 +10,14 @@ const scrolls: Scroll[] = [
 
 const Scrolls = () => {
   return (
-    <div>
-      <ListTitle>Scrolls</ListTitle>
-      {scrolls.map((scroll) => {
-        return <div key={scroll.name}>{scroll.name}</div>;
-      })}
-    </div>
+    <Section>
+      <Section.Title>Scrolls</Section.Title>
+      <Section.Body>
+        {scrolls.map((scroll) => {
+          return <div key={scroll.name}>{scroll.name}</div>;
+        })}
+      </Section.Body>
+    </Section>
   );
 };
 

@@ -129,7 +129,7 @@ function App() {
           Reset
         </p>
       </div>
-      <div className={"px-4 overflow-y-auto"}>
+      <div className={"overflow-y-auto"}>
         {mode === Mode.CAST ? (
           <>
             <Hexes />

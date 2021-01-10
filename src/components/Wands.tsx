@@ -1,5 +1,5 @@
 import React from "react";
-import { ListTitle } from "./ListTitle";
+import Section from "./Section";
 import { Wand } from "../types";
 
 const wands: Wand[] = [
@@ -13,16 +13,18 @@ const wands: Wand[] = [
 
 const Wands = () => {
   return (
-    <div>
-      <ListTitle>Wands</ListTitle>
-      {wands.map((wand) => {
-        return (
-          <div key={wand.id}>
-            {wand.name} ({wand.charges})
-          </div>
-        );
-      })}
-    </div>
+    <Section>
+      <Section.Title>Wands</Section.Title>
+      <Section.Body>
+        {wands.map((wand) => {
+          return (
+            <div key={wand.id}>
+              {wand.name} ({wand.charges})
+            </div>
+          );
+        })}
+      </Section.Body>
+    </Section>
   );
 };
 export default Wands;

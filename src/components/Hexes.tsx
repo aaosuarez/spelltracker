@@ -1,5 +1,5 @@
 import React from "react";
-import { ListTitle } from "./ListTitle";
+import Section from "./Section";
 import { Hex } from "../types";
 
 const hexes: Hex[] = [
@@ -12,12 +12,14 @@ const hexes: Hex[] = [
 
 const Hexes = () => {
   return (
-    <div>
-      <ListTitle>Hexes</ListTitle>
-      {hexes.map((hex) => {
-        return <div key={hex.name}>{hex.name}</div>;
-      })}
-    </div>
+    <Section>
+      <Section.Title>Hexes</Section.Title>
+      <Section.Body>
+        {hexes.map((hex) => {
+          return <div key={hex.name}>{hex.name}</div>;
+        })}
+      </Section.Body>
+    </Section>
   );
 };
 

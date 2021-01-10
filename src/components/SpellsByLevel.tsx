@@ -1,5 +1,5 @@
 import { getSpellsByLevel } from "../utils";
-import { ListTitle } from "./ListTitle";
+import Section from "./Section";
 import React from "react";
 import { Spell } from "../types";
 
@@ -11,18 +11,20 @@ const SpellsByLevel = ({
   renderSpell: (spell: Spell) => React.ReactNode;
 }) => {
   return (
-    <div>
+    <>
       {Object.entries(getSpellsByLevel(spells)).map(([level, spells]) => {
         return (
-          <div key={level}>
-            <ListTitle>Level {level}</ListTitle>
-            <ul className={"mb-4"}>
-              {spells.map((spell) => renderSpell(spell))}
-            </ul>
-          </div>
+          <Section key={level}>
+            <Section.Title>Level {level} Spells</Section.Title>
+            <Section.Body>
+              <ul className={"mb-4"}>
+                {spells.map((spell) => renderSpell(spell))}
+              </ul>
+            </Section.Body>
+          </Section>
         );
       })}
-    </div>
+    </>
   );
 };
 
