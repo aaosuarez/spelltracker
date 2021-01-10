@@ -1,7 +1,7 @@
 import { getSpellsByLevel } from "../utils";
 import { ListTitle } from "./ListTitle";
 import React from "react";
-import { Spell } from "../spells";
+import { Spell } from "../types";
 
 const SpellsByLevel = ({
   spells,

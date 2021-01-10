@@ -1,8 +1,4 @@
-export type Spell = {
-  level: number;
-  name: string;
-  id: number;
-};
+import { Spell } from "./types";
 
 export const knownSpells: Spell[] = [
   {

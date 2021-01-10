@@ -1,9 +1,6 @@
 import React from "react";
 import { ListTitle } from "./ListTitle";
-
-type Hex = {
-  name: string;
-};
+import { Hex } from "../types";
 
 const hexes: Hex[] = [
   { name: "Evil Eye" },

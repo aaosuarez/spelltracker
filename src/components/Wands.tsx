@@ -1,11 +1,6 @@
 import React from "react";
 import { ListTitle } from "./ListTitle";
-
-type Wand = {
-  id: number;
-  name: string;
-  charges: number;
-};
+import { Wand } from "../types";
 
 const wands: Wand[] = [
   { name: "Fly", charges: 9 },

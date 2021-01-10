@@ -1,7 +1,6 @@
 import { Dispatch, Reducer, useEffect, useReducer } from "react";
 import { canCastSpell, canPrepareSpell, isCantrip } from "../utils";
-import { Spell } from "../spells";
-import { Mode } from "../App";
+import { Mode, Spell } from "../types";
 
 type State = {
   mode: Mode;
@@ -22,20 +21,6 @@ type Action =
   | { type: "RESET" };
 
 const STORAGE_KEY = "SPELL_TRACKER";
-
-export default function useAppReducer(): [State, Dispatch<Action>] {
-  const [state, dispatch] = useReducer<Reducer<State, Action>, any>(
-    reducer,
-    initialState,
-    initializer
-  );
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
-
-  return [state, dispatch];
-}
 
 const reducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -69,3 +54,17 @@ const initializer = (initialValue = initialState) => {
   const state = localStorage.getItem(STORAGE_KEY);
   return state != null ? JSON.parse(state) : initialValue;
 };
+
+export default function useAppReducer(): [State, Dispatch<Action>] {
+  const [state, dispatch] = useReducer<Reducer<State, Action>, any>(
+    reducer,
+    initialState,
+    initializer
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [state]);
+
+  return [state, dispatch];
+}

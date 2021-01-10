@@ -1,9 +1,6 @@
 import React from "react";
 import { ListTitle } from "./ListTitle";
-
-type Scroll = {
-  name: string;
-};
+import { Scroll } from "../types";
 
 const scrolls: Scroll[] = [
   { name: "Shield" },

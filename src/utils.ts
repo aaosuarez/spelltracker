@@ -1,4 +1,4 @@
-import { Spell } from "./spells";
+import { Spell } from "./types";
 
 export const spellsPerDay = [4, 6, 4, 3, 2, null, null, null, null];
 

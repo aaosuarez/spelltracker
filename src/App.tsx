@@ -1,11 +1,10 @@
-import React, { useEffect, useReducer } from "react";
-import { knownSpells, Spell } from "./spells";
+import React from "react";
+import { knownSpells } from "./spells";
 import Button, { ButtonSizes, ButtonType } from "./components/Button";
 import {
   canCastSpell,
   canPrepareSpell,
   getSpellsByLevel,
-  isCantrip,
   spellsPerDay,
 } from "./utils";
 import Wands from "./components/Wands";
@@ -13,11 +12,7 @@ import Scrolls from "./components/Scroll";
 import Hexes from "./components/Hexes";
 import SpellsByLevel from "./components/SpellsByLevel";
 import useAppReducer from "./hooks/useAppReducer";
-
-export enum Mode {
-  PREPARE,
-  CAST,
-}
+import { Mode, Spell } from "./types";
 
 // TODO: Sort alphabetically by level
 const SpellsPerDay = ({ preparedSpells }: { preparedSpells: Spell[] }) => {
