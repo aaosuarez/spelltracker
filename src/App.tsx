@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { knownSpells } from "./spells";
 import Button, { ButtonSizes, ButtonType } from "./components/Button";
 import {
@@ -66,8 +66,13 @@ const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
 
 function App() {
   const [{ preparedSpells, mode, usedSpells }, dispatch] = useAppReducer();
+  const containerRef = useRef<HTMLDivElement>(null);
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
+
+  useEffect(() => {
+    containerRef.current?.scrollTo(0, 0);
+  }, [mode]);
 
   const renderSpell = (spell: Spell) => {
     const canPrepare = canPrepareSpell(preparedSpells, spell);
@@ -129,7 +134,7 @@ function App() {
           Reset
         </p>
       </div>
-      <div className={"overflow-y-auto"}>
+      <div className={"overflow-y-auto"} ref={containerRef}>
         {mode === Mode.CAST ? (
           <>
             <Hexes />
