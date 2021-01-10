@@ -1,4 +1,5 @@
 import { Dispatch, Reducer, useEffect, useReducer } from "react";
+import { v4 as uuid } from "uuid";
 import { canCastSpell, canPrepareSpell, isCantrip } from "../utils";
 import { Mode, Spell } from "../types";
 
@@ -33,7 +34,7 @@ const reducer = (state: State, action: Action) => {
       }
       const newPreparedSpells = [
         ...preparedSpells,
-        { ...action.spell, id: Math.floor(Math.random() * 1000) },
+        { ...action.spell, id: uuid() },
       ];
       return { ...state, preparedSpells: newPreparedSpells };
     case "CAST_SPELL":

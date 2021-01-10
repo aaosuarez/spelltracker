@@ -10,7 +10,7 @@ export type Hex = {
 export type Spell = {
   level: number;
   name: string;
-  id: number;
+  id: string;
 };
 
 export type Scroll = {
@@ -18,7 +18,7 @@ export type Scroll = {
 };
 
 export type Wand = {
-  id: number;
+  id: string;
   name: string;
   charges: number;
 };

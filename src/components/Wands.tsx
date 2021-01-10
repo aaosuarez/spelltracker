@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuid } from "uuid";
 import Section from "./Section";
 import { Wand } from "../types";
 
@@ -9,7 +10,7 @@ const wands: Wand[] = [
   { name: "Charm Person", charges: 18 },
   { name: "Charm Person", charges: 9 },
   { name: "Mage Armor", charges: 6 },
-].map((wand) => ({ ...wand, id: Math.floor(Math.random() * 1000) }));
+].map((wand) => ({ ...wand, id: uuid() }));
 
 const Wands = () => {
   return (

@@ -1,4 +1,5 @@
 import { Spell } from "./types";
+import { v4 as uuid } from "uuid";
 
 export const knownSpells: Spell[] = [
   {
@@ -169,4 +170,4 @@ export const knownSpells: Spell[] = [
     level: 4,
     name: "Divination",
   },
-].map((spell, i) => ({ ...spell, id: i }));
+].map((spell, i) => ({ ...spell, id: uuid() }));
