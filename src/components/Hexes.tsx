@@ -15,9 +15,11 @@ const Hexes = () => {
     <Section>
       <Section.Title>Hexes</Section.Title>
       <Section.Body>
-        {hexes.map((hex) => {
-          return <div key={hex.name}>{hex.name}</div>;
-        })}
+        {hexes
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((hex) => {
+            return <div key={hex.name}>{hex.name}</div>;
+          })}
       </Section.Body>
     </Section>
   );

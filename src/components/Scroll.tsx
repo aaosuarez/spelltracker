@@ -13,9 +13,11 @@ const Scrolls = () => {
     <Section>
       <Section.Title>Scrolls</Section.Title>
       <Section.Body>
-        {scrolls.map((scroll) => {
-          return <div key={scroll.name}>{scroll.name}</div>;
-        })}
+        {scrolls
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((scroll) => {
+            return <div key={scroll.name}>{scroll.name}</div>;
+          })}
       </Section.Body>
     </Section>
   );

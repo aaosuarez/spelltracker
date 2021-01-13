@@ -76,7 +76,10 @@ const reducer = (state: State, action: Action) => {
       return { ...state, wands: newWands };
     }
     case "RESET":
-      return initialState;
+      return {
+        ...state,
+        preparedSpells: [],
+      };
     default:
       return state;
   }

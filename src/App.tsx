@@ -143,7 +143,7 @@ function App() {
             <Hexes />
             <Scrolls />
             <Wands
-              wands={wands}
+              wands={wands.sort((a, b) => a.name.localeCompare(b.name))}
               increment={(wand) =>
                 dispatch({ type: "INCREMENT_WAND", wandId: wand.id })
               }
@@ -153,7 +153,10 @@ function App() {
             />
           </>
         ) : null}
-        <SpellsByLevel spells={spellsToDisplay} renderSpell={renderSpell} />
+        <SpellsByLevel
+          spells={spellsToDisplay.sort((a, b) => a.name.localeCompare(b.name))}
+          renderSpell={renderSpell}
+        />
       </div>
     </div>
   );
