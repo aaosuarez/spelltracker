@@ -1,25 +1,30 @@
 import { Dispatch, Reducer, useEffect, useReducer } from "react";
 import { v4 as uuid } from "uuid";
 import { canCastSpell, canPrepareSpell, isCantrip } from "../utils";
-import { Mode, Spell } from "../types";
+import { Mode, Spell, Wand } from "../types";
+import { initialWands } from "../components/Wands";
 
 type State = {
   mode: Mode;
   preparedSpells: Spell[];
   usedSpells: Spell[];
+  wands: Wand[];
 };
 
 const initialState: State = {
   mode: Mode.PREPARE,
   preparedSpells: [],
   usedSpells: [],
+  wands: initialWands,
 };
 
 type Action =
   | { type: "SET_MODE"; mode: Mode }
   | { type: "PREPARE_SPELL"; spell: Spell }
   | { type: "CAST_SPELL"; spell: Spell }
-  | { type: "RESET" };
+  | { type: "RESET" }
+  | { type: "INCREMENT_WAND"; wandId: string }
+  | { type: "DECREMENT_WAND"; wandId: string };
 
 const STORAGE_KEY = "SPELL_TRACKER";
 
@@ -44,6 +49,32 @@ const reducer = (state: State, action: Action) => {
       }
       const newUsedSpells = [...usedSpells, action.spell];
       return { ...state, usedSpells: newUsedSpells };
+    case "INCREMENT_WAND": {
+      const { wands } = state;
+      const newWands = wands.map((wand) => {
+        if (wand.id == action.wandId) {
+          return {
+            ...wand,
+            charges: wand.charges + 1,
+          };
+        }
+        return wand;
+      });
+      return { ...state, wands: newWands };
+    }
+    case "DECREMENT_WAND": {
+      const { wands } = state;
+      const newWands = wands.map((wand) => {
+        if (wand.id == action.wandId) {
+          return {
+            ...wand,
+            charges: wand.charges - 1,
+          };
+        }
+        return wand;
+      });
+      return { ...state, wands: newWands };
+    }
     case "RESET":
       return initialState;
     default:

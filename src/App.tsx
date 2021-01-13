@@ -65,7 +65,10 @@ const SpellsCast = ({ usedSpells }: { usedSpells: Spell[] }) => {
 };
 
 function App() {
-  const [{ preparedSpells, mode, usedSpells }, dispatch] = useAppReducer();
+  const [
+    { preparedSpells, mode, usedSpells, wands },
+    dispatch,
+  ] = useAppReducer();
   const containerRef = useRef<HTMLDivElement>(null);
   const spellsToDisplay: Spell[] =
     mode === Mode.PREPARE ? knownSpells : preparedSpells;
@@ -134,12 +137,20 @@ function App() {
           Reset
         </p>
       </div>
-      <div className={"overflow-y-auto"} ref={containerRef}>
+      <div className={"overflow-y-auto bg-gray-50"} ref={containerRef}>
         {mode === Mode.CAST ? (
           <>
             <Hexes />
             <Scrolls />
-            <Wands />
+            <Wands
+              wands={wands}
+              increment={(wand) =>
+                dispatch({ type: "INCREMENT_WAND", wandId: wand.id })
+              }
+              decrement={(wand) =>
+                dispatch({ type: "DECREMENT_WAND", wandId: wand.id })
+              }
+            />
           </>
         ) : null}
         <SpellsByLevel spells={spellsToDisplay} renderSpell={renderSpell} />
